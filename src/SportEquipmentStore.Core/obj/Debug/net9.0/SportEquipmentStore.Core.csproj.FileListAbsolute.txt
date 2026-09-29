@@ -1,0 +1,12 @@
+C:\SportEquipmentStore\SportEquipmentStore\src\SportEquipmentStore.Core\bin\Debug\net9.0\SportEquipmentStore.Core.deps.json
+C:\SportEquipmentStore\SportEquipmentStore\src\SportEquipmentStore.Core\bin\Debug\net9.0\SportEquipmentStore.Core.dll
+C:\SportEquipmentStore\SportEquipmentStore\src\SportEquipmentStore.Core\bin\Debug\net9.0\SportEquipmentStore.Core.pdb
+C:\SportEquipmentStore\SportEquipmentStore\src\SportEquipmentStore.Core\obj\Debug\net9.0\SportEquipmentStore.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\SportEquipmentStore\SportEquipmentStore\src\SportEquipmentStore.Core\obj\Debug\net9.0\SportEquipmentStore.Core.AssemblyInfoInputs.cache
+C:\SportEquipmentStore\SportEquipmentStore\src\SportEquipmentStore.Core\obj\Debug\net9.0\SportEquipmentStore.Core.AssemblyInfo.cs
+C:\SportEquipmentStore\SportEquipmentStore\src\SportEquipmentStore.Core\obj\Debug\net9.0\SportEquipmentStore.Core.csproj.CoreCompileInputs.cache
+C:\SportEquipmentStore\SportEquipmentStore\src\SportEquipmentStore.Core\obj\Debug\net9.0\SportEquipmentStore.Core.sourcelink.json
+C:\SportEquipmentStore\SportEquipmentStore\src\SportEquipmentStore.Core\obj\Debug\net9.0\SportEquipmentStore.Core.dll
+C:\SportEquipmentStore\SportEquipmentStore\src\SportEquipmentStore.Core\obj\Debug\net9.0\refint\SportEquipmentStore.Core.dll
+C:\SportEquipmentStore\SportEquipmentStore\src\SportEquipmentStore.Core\obj\Debug\net9.0\SportEquipmentStore.Core.pdb
+C:\SportEquipmentStore\SportEquipmentStore\src\SportEquipmentStore.Core\obj\Debug\net9.0\ref\SportEquipmentStore.Core.dll
