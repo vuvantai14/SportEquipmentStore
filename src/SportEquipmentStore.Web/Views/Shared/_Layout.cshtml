@@ -1,47 +1,181 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="vi">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - SportEquipmentStore.Web</title>
+    <meta name="description" content="Sport Equipment Store - dụng cụ thể thao cho cuộc sống năng động." />
+    <title>@ViewData["Title"] - Sport Equipment Store</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SportEquipmentStore.Web.styles.css" asp-append-version="true" />
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SportEquipmentStore.Web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+<body class="site-body">
+    <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
+
+    <header class="site-header">
+        <div class="top-bar">
+            <div class="container top-bar__content">
+                <span class="top-bar__message">Miễn phí vận chuyển với đơn đủ điều kiện</span>
+                <div class="top-bar__links" aria-label="Thông tin hỗ trợ">
+                    <span>Hỗ trợ khách hàng</span>
+                    <span class="top-bar__separator" aria-hidden="true"></span>
+                    <span>Đổi trả thuận tiện</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-header">
+            <div class="container main-header__grid">
+                <a class="brand" asp-area="" asp-controller="Home" asp-action="Index" aria-label="Sport Equipment Store - Trang chủ">
+                    <img class="brand__mark" src="~/images/branding/logo-mark.svg" alt="" width="48" height="48" />
+                    <span class="brand__copy">
+                        <strong>SPORT EQUIPMENT</strong>
+                        <small>Store</small>
+                    </span>
+                </a>
+
+                <form class="header-search" role="search" aria-label="Tìm kiếm sản phẩm">
+                    <label class="visually-hidden" for="site-search">Tìm kiếm sản phẩm</label>
+                    <span class="header-search__icon">
+                        @await Html.PartialAsync("_Icon", "search")
+                    </span>
+                    <input id="site-search"
+                           class="header-search__input"
+                           type="search"
+                           name="query"
+                           placeholder="Tìm kiếm sản phẩm..."
+                           autocomplete="off"
+                           aria-describedby="search-availability" />
+                    <button class="header-search__button"
+                            type="button"
+                            aria-label="Tìm kiếm sản phẩm - sẽ có ở bước S12"
+                            title="Tìm kiếm sẽ được triển khai ở S12"
+                            disabled>
+                        Tìm kiếm
+                    </button>
+                    <span id="search-availability" class="visually-hidden">Chức năng tìm kiếm sẽ được triển khai ở bước sau.</span>
+                </form>
+
+                <div class="header-actions" aria-label="Tài khoản và giỏ hàng">
+                    <button class="header-action" type="button" disabled aria-label="Tài khoản - đăng nhập sẽ có ở bước S13">
+                        <span class="header-action__icon">@await Html.PartialAsync("_Icon", "person")</span>
+                        <span class="header-action__copy">
+                            <small>Tài khoản</small>
+                            <strong>Đăng nhập / Đăng ký</strong>
+                        </span>
+                    </button>
+                    <button class="header-action header-action--cart" type="button" disabled aria-label="Giỏ hàng trống - sẽ có ở bước S14">
+                        <span class="header-action__icon">
+                            @await Html.PartialAsync("_Icon", "cart")
+                            <span class="cart-count" aria-hidden="true">0</span>
+                        </span>
+                        <span class="header-action__copy">
+                            <small>Giỏ hàng</small>
+                            <strong>Chưa có sản phẩm</strong>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <nav class="navbar navbar-expand-lg primary-nav" aria-label="Điều hướng chính">
+            <div class="container">
+                <button class="navbar-toggler primary-nav__toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#primary-navigation"
+                        aria-controls="primary-navigation"
+                        aria-expanded="false"
+                        aria-label="Mở hoặc đóng menu chính">
+                    <span class="navbar-toggler-icon" aria-hidden="true"></span>
+                    <span>Menu</span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+
+                <div id="primary-navigation" class="collapse navbar-collapse">
+                    <ul class="navbar-nav primary-nav__list">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link active" aria-current="page" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <span class="nav-link nav-link--disabled" aria-disabled="true" title="Danh sách sản phẩm sẽ có ở S11">Sản phẩm</span>
+                        </li>
+                        <li class="nav-item dropdown">
+                            @await Component.InvokeAsync("CategoryNavigation")
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index" asp-fragment="about">Giới thiệu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index" asp-fragment="contact">Liên hệ</a>
                         </li>
                     </ul>
+                    <span class="primary-nav__note d-none d-lg-inline">Sẵn sàng cho mọi chuyển động</span>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
+    <main id="main-content" class="site-main" tabindex="-1">
+        <div class="container site-content">
+            @RenderBody()
+        </div>
+    </main>
+
+    <partial name="_TrustBenefits" />
+
+    <footer class="site-footer">
         <div class="container">
-            &copy; 2026 - SportEquipmentStore.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="site-footer__grid">
+                <section id="about" class="site-footer__brand" aria-labelledby="footer-brand-title">
+                    <a class="brand brand--footer" asp-area="" asp-controller="Home" asp-action="Index">
+                        <img class="brand__mark" src="~/images/branding/logo-mark.svg" alt="" width="44" height="44" />
+                        <span class="brand__copy">
+                            <strong id="footer-brand-title">SPORT EQUIPMENT</strong>
+                            <small>Store</small>
+                        </span>
+                    </a>
+                    <p>Dụng cụ thể thao cho cuộc sống năng động, được xây dựng với trải nghiệm rõ ràng và thuận tiện.</p>
+                </section>
+
+                <section aria-labelledby="footer-quick-links">
+                    <h2 id="footer-quick-links" class="site-footer__title">Liên kết nhanh</h2>
+                    <ul class="footer-links">
+                        <li><a asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                        <li><span aria-disabled="true">Sản phẩm <small>(S11)</small></span></li>
+                        <li><span aria-disabled="true">Danh mục <small>(S10)</small></span></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Index" asp-fragment="about">Giới thiệu</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Index" asp-fragment="contact">Liên hệ</a></li>
+                    </ul>
+                </section>
+
+                <section aria-labelledby="footer-support-links">
+                    <h2 id="footer-support-links" class="site-footer__title">Hỗ trợ khách hàng</h2>
+                    <ul class="footer-links">
+                        <li><span aria-disabled="true">Hướng dẫn mua hàng</span></li>
+                        <li><span aria-disabled="true">Chính sách đổi trả</span></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Chính sách bảo mật</a></li>
+                        <li><span aria-disabled="true">Điều khoản sử dụng</span></li>
+                    </ul>
+                </section>
+
+                <section id="contact" aria-labelledby="footer-contact-title">
+                    <h2 id="footer-contact-title" class="site-footer__title">Liên hệ</h2>
+                    <address class="site-footer__contact">
+                        <span><strong>Email:</strong> support@sportequipment.example</span>
+                        <span><strong>Hotline:</strong> 1900 0000 (minh họa)</span>
+                        <span><strong>Địa chỉ:</strong> 123 Đường Thể Thao, TP. Hồ Chí Minh (minh họa)</span>
+                    </address>
+                </section>
+            </div>
+
+            <div class="site-footer__bottom">
+                <span>&copy; 2026 Sport Equipment Store.</span>
+                <span>Website đồ án quản lý và bán dụng cụ thể thao.</span>
+            </div>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

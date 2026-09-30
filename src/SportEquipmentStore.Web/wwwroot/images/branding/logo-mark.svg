@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="logo-title">
+  <title id="logo-title">Biểu tượng Sport Equipment Store</title>
+  <defs>
+    <linearGradient id="logo-gradient" x1="10" y1="8" x2="54" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2f7df4" />
+      <stop offset="1" stop-color="#0f4fbf" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="18" fill="#0b1f3a" />
+  <path d="M15 37.5 26.2 18h11.5L49 37.5 42.2 49H21.8L15 37.5Z" fill="url(#logo-gradient)" />
+  <path d="m24.5 38.5 7.6-13.2 7.5 13.2h-5.1l-2.4-4.2-2.5 4.2h-5.1Z" fill="#fff" />
+  <circle cx="47.5" cy="17" r="4.5" fill="#f97316" />
+</svg>

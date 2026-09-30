@@ -1,8 +1,31 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@{
+    ViewData["Title"] = "Trang chủ";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="home-intro" aria-labelledby="home-intro-title">
+    <div class="home-intro__content">
+        <span class="eyebrow">Nền tảng mua sắm thể thao</span>
+        <h1 id="home-intro-title">Sẵn sàng cho mọi chuyển động</h1>
+        <p>
+            Sport Equipment Store đang xây dựng trải nghiệm mua dụng cụ thể thao hiện đại,
+            rõ ràng và thuận tiện trên mọi thiết bị.
+        </p>
+        <div class="home-intro__actions">
+            <a class="btn btn-primary" href="#trust-benefits">Khám phá lợi ích</a>
+            <span class="home-intro__status">Danh mục và sản phẩm sẽ được hoàn thiện ở S10.</span>
+        </div>
+    </div>
+
+    <div class="home-intro__visual" aria-label="Nền tảng giao diện Sport Equipment Store">
+        <div class="intro-panel">
+            <img src="~/images/branding/logo-mark.svg" alt="" width="72" height="72" />
+            <span class="intro-panel__eyebrow">UI FOUNDATION</span>
+            <strong>Trải nghiệm nhất quán từ desktop đến mobile</strong>
+            <ul>
+                <li>Điều hướng rõ ràng</li>
+                <li>Tìm kiếm dễ tiếp cận</li>
+                <li>Thiết kế responsive</li>
+            </ul>
+        </div>
+    </div>
+</section>

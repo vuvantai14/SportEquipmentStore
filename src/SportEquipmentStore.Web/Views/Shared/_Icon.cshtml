@@ -1,0 +1,7 @@
+@model string
+@{
+    var spriteUrl = Url.Content("~/images/icons/ui-icons.svg");
+}
+<svg class="ui-icon" aria-hidden="true" focusable="false">
+    <use href="@($"{spriteUrl}#{Model}")"></use>
+</svg>

@@ -1,0 +1,26 @@
+@model IReadOnlyList<SportEquipmentStore.Core.Entities.Category>
+
+<button class="nav-link dropdown-toggle"
+        type="button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false">
+    Danh mục
+</button>
+<ul class="dropdown-menu category-menu">
+    @if (Model.Count == 0)
+    {
+        <li><span class="dropdown-item-text text-muted">Chưa có danh mục hoạt động</span></li>
+    }
+    else
+    {
+        @foreach (var category in Model)
+        {
+            <li>
+                <span class="dropdown-item category-menu__item" aria-disabled="true" title="Trang danh mục sẽ có ở S10">
+                    <span>@category.CategoryName</span>
+                    <small>S10</small>
+                </span>
+            </li>
+        }
+    }
+</ul>

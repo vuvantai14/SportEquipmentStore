@@ -1,0 +1,27 @@
+@{
+    var benefits = new (string Icon, string Title, string Description)[]
+    {
+        ("truck", "Giao hàng nhanh", "Quy trình giao nhận rõ ràng và thuận tiện."),
+        ("shield-check", "Sản phẩm chính hãng", "Thông tin sản phẩm minh bạch, dễ kiểm tra."),
+        ("return", "Đổi trả thuận tiện", "Chính sách hỗ trợ sẽ được công bố rõ ràng."),
+        ("headset", "Hỗ trợ khách hàng", "Luôn sẵn sàng tiếp nhận câu hỏi của bạn.")
+    };
+}
+
+<section id="trust-benefits" class="trust-section" aria-labelledby="trust-section-title">
+    <div class="container">
+        <h2 id="trust-section-title" class="visually-hidden">Lợi ích khi mua sắm</h2>
+        <div class="trust-section__grid">
+            @foreach (var benefit in benefits)
+            {
+                <article class="trust-item">
+                    <span class="trust-item__icon">@await Html.PartialAsync("_Icon", benefit.Icon)</span>
+                    <span class="trust-item__copy">
+                        <strong>@benefit.Title</strong>
+                        <span>@benefit.Description</span>
+                    </span>
+                </article>
+            }
+        </div>
+    </div>
+</section>
