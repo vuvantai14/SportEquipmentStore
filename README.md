@@ -41,5 +41,3 @@ SQL Server
     |
 WinForms Admin
 ```
-
-> Repository hiện mới ở giai đoạn chuẩn hóa nền tảng. Các chức năng nghiệp vụ và kết nối cơ sở dữ liệu sẽ được triển khai ở những giai đoạn sau.

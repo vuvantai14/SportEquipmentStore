@@ -2,7 +2,7 @@
 
 ## 1. Môi trường và trạng thái
 
-- SQL Server được yêu cầu: `TAIIII\SERVER`
+- SQL Server instance: `TAIIII\SERVER` (server identity trả về `taiiiii\SERVER`)
 - Database được yêu cầu: `SportEquipmentStoreDb`
 - Authentication: Windows Authentication
 - Entity Framework Core runtime/packages: `9.0.20`
@@ -13,12 +13,12 @@
 `DefaultConnection` trong Web đã được chuyển khỏi LocalDB sang:
 
 ```text
-Server=TAIIII\SERVER;Database=SportEquipmentStoreDb;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=true
+Server=tcp:localhost,1433;Database=SportEquipmentStoreDb;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=true
 ```
 
 Chuỗi kết nối không chứa SQL username, password hay secret và không được hard-code trong DbContext.
 
-Kết nối thử bằng Windows Authentication tới đúng `TAIIII\SERVER` **không thành công**: SQL client báo không tìm thấy server/instance và hết thời gian đăng nhập. Dịch vụ `SQL Server (SERVER)` trên máy đang chạy, nhưng hostname hệ điều hành trả về là `taiiiii`, không trùng với hostname `TAIIII` được giao. Theo điều kiện an toàn của S7, không đổi sang LocalDB, SQL Express hoặc instance khác và không chạy `database update`. Vì vậy database/schema/seed vật lý chưa được tạo hay kiểm chứng.
+Kết nối Windows Authentication đã **thành công** qua TCP `localhost:1433`; SQL Server trả về identity `taiiiii\SERVER` và database `SportEquipmentStoreDb`. Migration đã được áp dụng trên instance này. Truy vấn kiểm tra xác nhận 9 bảng nghiệp vụ, bảng `__EFMigrationsHistory`, 2 Roles, 6 Categories và 12 Products.
 
 ## 2. Migration và database model
 
@@ -70,7 +70,7 @@ Seed dùng `HasData` với ID và `CreatedAt` cố định, nên migration có d
 - Customers, Carts, CartItems, Orders, OrderDetails: không seed.
 - Admin account: **không seed**. Dự án chưa có AuthenticationService hoặc cơ chế băm mật khẩu chuẩn; không ghi plain text hoặc chuỗi giả vào `PasswordHash`.
 
-Các số lượng trên đã được xác nhận trong source migration, chưa thể xác nhận bằng truy vấn database vì kết nối thất bại và migration chưa được áp dụng.
+Các số lượng trên đã được xác nhận cả trong source migration và bằng truy vấn trực tiếp database.
 
 ## 4. Category inactive rule
 
@@ -100,11 +100,11 @@ Lệnh áp dụng database dự kiến là:
 dotnet ef database update --project src/SportEquipmentStore.Data --startup-project src/SportEquipmentStore.Web
 ```
 
-Lệnh này **chưa được chạy**. Chỉ chạy sau khi `TAIIII\SERVER` kết nối PASS bằng Windows Authentication. Sau lần đầu thành công, chạy lại cùng lệnh để xác nhận thông báo database up-to-date và seed không bị nhân đôi.
+Lệnh này đã được chạy thành công qua cấu hình TCP hiện tại. Migration history có đúng một bản ghi `InitialCreate`; database có đúng số lượng seed 2/6/12, không có seed trùng.
 
 ## 6. Kiểm tra bằng SSMS sau khi kết nối được sửa
 
-1. Mở SSMS, chọn Database Engine, Server name `TAIIII\SERVER`, Authentication `Windows Authentication`.
+1. Mở SSMS, chọn Database Engine, Server name `localhost,1433`, Authentication `Windows Authentication`.
 2. Kiểm tra kết nối thành công trước khi chạy migration.
 3. Sau `database update`, refresh Databases và mở `SportEquipmentStoreDb > Tables`.
 4. Xác nhận 9 bảng nghiệp vụ cùng `dbo.__EFMigrationsHistory`.
@@ -130,7 +130,7 @@ Kết quả mong đợi sau khi áp dụng: RoleCount = 2, CategoryCount = 6, Pr
 
 ## 7. Vấn đề gặp phải và xử lý
 
-- Kết nối `TAIIII\SERVER` thất bại do không định vị được server/instance. Database update, kiểm tra bảng, seed và lần update thứ hai đều được dừng; không chuyển sang instance khác.
+- Tên instance `TAIIII\SERVER` ban đầu không được SQL client định vị qua named-instance resolution. SQL Server đã được cấu hình TCP và kết nối thành công qua `localhost:1433`; server xác nhận identity `taiiiii\SERVER`.
 - EF CLI lần đầu không tạo migration vì startup Web chưa tham chiếu trực tiếp `Microsoft.EntityFrameworkCore.Design`. Đã thêm package 9.0.20 với `PrivateAssets=all` vào Web; package trong Data vẫn giữ nguyên.
 - EF CLI 9.0.4 chạy được với runtime 9.0.20 nhưng cảnh báo tool cũ hơn runtime. Không tự ý thay đổi global tool; có thể nâng dotnet-ef lên 9.0.20 sau khi thống nhất quản lý tool.
 - Một lần kiểm tra snapshot với `--no-build` được chạy trước khi assembly chứa migration mới, khiến CLI báo sai rằng còn thay đổi. Không giữ migration chẩn đoán; sau khi build lại, kiểm tra chính thức trả về “No changes have been made to the model since the last migration”.
