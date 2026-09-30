@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SportEquipmentStore.Core.Entities;
 using SportEquipmentStore.Core.Enums;
+using SportEquipmentStore.Data.Seed;
 
 namespace SportEquipmentStore.Data.Context;
 
@@ -40,6 +41,7 @@ public class SportEquipmentStoreDbContext : DbContext
         ConfigureCartItems(modelBuilder);
         ConfigureOrders(modelBuilder);
         ConfigureOrderDetails(modelBuilder);
+        ModelSeedData.Apply(modelBuilder);
     }
 
     private static void ConfigureRoles(ModelBuilder modelBuilder)
