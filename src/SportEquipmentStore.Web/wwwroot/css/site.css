@@ -317,6 +317,11 @@ a:focus-visible,
   background: transparent;
   border: 0;
   text-align: left;
+  text-decoration: none;
+}
+
+a.header-action:hover {
+  color: var(--color-primary-600);
 }
 
 .header-action:disabled {

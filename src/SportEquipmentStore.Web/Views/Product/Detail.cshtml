@@ -6,6 +6,7 @@
     var imageUrl = string.IsNullOrWhiteSpace(Model.ImageUrl)
         ? Url.Content("~/images/placeholders/product-placeholder.svg")
         : Model.ImageUrl;
+    var detailReturnUrl = Url.Action("Detail", "Product", new { id = Model.ProductId });
 }
 
 @section Styles {
@@ -19,6 +20,11 @@
         <li aria-current="page">@Model.ProductName</li>
     </ol>
 </nav>
+
+@if (TempData["CartError"] is string cartError)
+{
+    <div class="product-detail__alert" role="alert">@cartError</div>
+}
 
 <article class="product-detail" aria-labelledby="product-detail-title">
     <figure class="product-detail__media">
@@ -51,6 +57,38 @@
                 <p>@Model.Description</p>
             </section>
         }
+
+        <div class="product-detail__purchase">
+            @if (Model.StockQuantity <= 0)
+            {
+                <button class="btn btn-primary" type="button" disabled>Hết hàng</button>
+            }
+            else if (User.Identity?.IsAuthenticated == true && User.IsInRole("Customer"))
+            {
+                <form asp-controller="Cart"
+                      asp-action="Add"
+                      method="post"
+                      asp-antiforgery="true">
+                    <input type="hidden" name="ProductId" value="@Model.ProductId" />
+                    <label for="add-quantity">Số lượng</label>
+                    <input id="add-quantity"
+                           name="Quantity"
+                           type="number"
+                           value="1"
+                           min="1"
+                           max="@Model.StockQuantity"
+                           inputmode="numeric" />
+                    <button class="btn btn-primary" type="submit">Thêm vào giỏ hàng</button>
+                </form>
+            }
+            else
+            {
+                <a class="btn btn-primary"
+                   asp-controller="Account"
+                   asp-action="Login"
+                   asp-route-returnUrl="@detailReturnUrl">Đăng nhập để thêm vào giỏ</a>
+            }
+        </div>
 
         <a class="btn btn-outline-primary product-detail__back"
            asp-controller="Product"

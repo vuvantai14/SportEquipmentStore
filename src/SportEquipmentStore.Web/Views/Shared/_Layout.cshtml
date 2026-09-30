@@ -95,16 +95,7 @@
                             </div>
                         }
                     </div>
-                    <button class="header-action header-action--cart" type="button" disabled aria-label="Giỏ hàng trống - sẽ có ở bước S14">
-                        <span class="header-action__icon">
-                            @await Html.PartialAsync("_Icon", "cart")
-                            <span class="cart-count" aria-hidden="true">0</span>
-                        </span>
-                        <span class="header-action__copy">
-                            <small>Giỏ hàng</small>
-                            <strong>Chưa có sản phẩm</strong>
-                        </span>
-                    </button>
+                    @await Component.InvokeAsync("CartSummary")
                 </div>
             </div>
         </div>

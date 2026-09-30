@@ -23,6 +23,8 @@ Sport Equipment Store gồm website ASP.NET Core MVC dành cho khách hàng và 
 - Search backend từ Header và Product Catalog.
 - Customer Register, Login và Logout bằng cookie authentication.
 - Password hashing và trạng thái đăng nhập trên Header.
+- Shopping Cart cho Customer với Add, Update, Remove và Clear.
+- Cart badge hiển thị tổng số lượng từ database.
 - Lọc sản phẩm theo danh mục và sắp xếp theo giá hoặc tên.
 - Reusable Product Card với trạng thái tồn kho.
 - Local product image fallback và SVG assets.
@@ -196,6 +198,7 @@ Không lưu connection string chứa thông tin bí mật trong source control. 
 - [Product Catalog](docs/S11-Product-Catalog.md)
 - [Product Detail & Search](docs/S12-Product-Detail-Search.md)
 - [Customer Authentication](docs/S13-Customer-Authentication.md)
+- [Shopping Cart](docs/S14-Shopping-Cart.md)
 
 ## Current Status
 
@@ -208,10 +211,10 @@ Không lưu connection string chứa thông tin bí mật trong source control. 
 - Database-driven categories và products.
 - Product Catalog, Product Detail, search, category filtering và product sorting.
 - Customer registration, login, logout và cookie authentication.
+- Customer Shopping Cart và database-driven cart badge.
 
 ### Under Development
 
-- Shopping Cart pages.
 - Checkout.
 - Order History.
 - Admin management UI.

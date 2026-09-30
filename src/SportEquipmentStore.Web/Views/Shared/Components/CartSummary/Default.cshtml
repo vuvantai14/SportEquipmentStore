@@ -1,0 +1,35 @@
+@model CartBadgeViewModel
+
+@if (Model.IsAuthenticated)
+{
+    <a class="header-action header-action--cart"
+       asp-controller="Cart"
+       asp-action="Index"
+       aria-label="Giỏ hàng có @Model.TotalQuantity sản phẩm">
+        <span class="header-action__icon">
+            @await Html.PartialAsync("_Icon", "cart")
+            <span class="cart-count">@Model.TotalQuantity</span>
+        </span>
+        <span class="header-action__copy">
+            <small>Giỏ hàng</small>
+            <strong>@(Model.TotalQuantity > 0 ? $"{Model.TotalQuantity} sản phẩm" : "Chưa có sản phẩm")</strong>
+        </span>
+    </a>
+}
+else
+{
+    <a class="header-action header-action--cart"
+       asp-controller="Account"
+       asp-action="Login"
+       asp-route-returnUrl="@Url.Action("Index", "Cart")"
+       aria-label="Đăng nhập để xem giỏ hàng">
+        <span class="header-action__icon">
+            @await Html.PartialAsync("_Icon", "cart")
+            <span class="cart-count">0</span>
+        </span>
+        <span class="header-action__copy">
+            <small>Giỏ hàng</small>
+            <strong>Đăng nhập để xem</strong>
+        </span>
+    </a>
+}
