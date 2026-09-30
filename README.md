@@ -21,6 +21,8 @@ Sport Equipment Store gồm website ASP.NET Core MVC dành cho khách hàng và 
 - Product Catalog tại `/products`.
 - Product Detail tại `/products/{id}`.
 - Search backend từ Header và Product Catalog.
+- Customer Register, Login và Logout bằng cookie authentication.
+- Password hashing và trạng thái đăng nhập trên Header.
 - Lọc sản phẩm theo danh mục và sắp xếp theo giá hoặc tên.
 - Reusable Product Card với trạng thái tồn kho.
 - Local product image fallback và SVG assets.
@@ -39,6 +41,7 @@ Sport Equipment Store gồm website ASP.NET Core MVC dành cho khách hàng và 
 - Inventory deduction và restoration.
 - Order status và cancellation rules.
 - Order total calculation tại Service Layer.
+- Customer authentication service.
 
 ### Admin Application
 
@@ -122,6 +125,7 @@ Seed data hiện tại gồm 2 Roles, 6 Categories và 12 Products. Seed không 
 - `ICustomerService` / `CustomerService`
 - `ICartService` / `CartService`
 - `IOrderService` / `OrderService`
+- `IAuthService` / `AuthService`
 
 Luồng xử lý chung:
 
@@ -190,6 +194,8 @@ Không lưu connection string chứa thông tin bí mật trong source control. 
 - [Web UI Foundation](docs/S9-Web-UI-Foundation.md)
 - [Customer Homepage](docs/S10-Customer-Homepage.md)
 - [Product Catalog](docs/S11-Product-Catalog.md)
+- [Product Detail & Search](docs/S12-Product-Detail-Search.md)
+- [Customer Authentication](docs/S13-Customer-Authentication.md)
 
 ## Current Status
 
@@ -201,10 +207,10 @@ Không lưu connection string chứa thông tin bí mật trong source control. 
 - Customer Web foundation và responsive Homepage.
 - Database-driven categories và products.
 - Product Catalog, Product Detail, search, category filtering và product sorting.
+- Customer registration, login, logout và cookie authentication.
 
 ### Under Development
 
-- Authentication và Authorization.
 - Shopping Cart pages.
 - Checkout.
 - Order History.
@@ -213,6 +219,6 @@ Không lưu connection string chứa thông tin bí mật trong source control. 
 ## Security
 
 - Không commit password, database credential hoặc secret.
-- Không lưu password dạng plain text.
+- Customer password được hash bằng ASP.NET Core `PasswordHasher<User>`; không lưu plain text.
 - Cấu hình development hiện tại sử dụng Windows Authentication cho SQL Server.
 - Production secrets phải được lưu ngoài source control.

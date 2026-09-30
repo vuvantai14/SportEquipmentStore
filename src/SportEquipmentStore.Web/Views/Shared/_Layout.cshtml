@@ -68,13 +68,33 @@
                 </form>
 
                 <div class="header-actions" aria-label="Tài khoản và giỏ hàng">
-                    <button class="header-action" type="button" disabled aria-label="Tài khoản - đăng nhập sẽ có ở bước S13">
+                    <div class="header-account">
                         <span class="header-action__icon">@await Html.PartialAsync("_Icon", "person")</span>
-                        <span class="header-action__copy">
-                            <small>Tài khoản</small>
-                            <strong>Đăng nhập / Đăng ký</strong>
-                        </span>
-                    </button>
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <div class="header-account__authenticated">
+                                <span class="header-account__identity">
+                                    <small>Xin chào</small>
+                                    <strong>@User.Identity.Name</strong>
+                                </span>
+                                <form class="header-logout"
+                                      asp-controller="Account"
+                                      asp-action="Logout"
+                                      method="post"
+                                      asp-antiforgery="true">
+                                    <button type="submit">Đăng xuất</button>
+                                </form>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="header-account__guest">
+                                <a asp-controller="Account" asp-action="Login">Đăng nhập</a>
+                                <span aria-hidden="true">/</span>
+                                <a asp-controller="Account" asp-action="Register">Đăng ký</a>
+                            </div>
+                        }
+                    </div>
                     <button class="header-action header-action--cart" type="button" disabled aria-label="Giỏ hàng trống - sẽ có ở bước S14">
                         <span class="header-action__icon">
                             @await Html.PartialAsync("_Icon", "cart")
