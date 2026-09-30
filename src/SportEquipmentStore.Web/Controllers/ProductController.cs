@@ -23,6 +23,7 @@ public sealed class ProductController : Controller
     public async Task<IActionResult> Index(
         int? categoryId,
         string? sort,
+        string? q,
         CancellationToken cancellationToken)
     {
         var categories = await _categoryService.GetActiveAsync(cancellationToken);
@@ -33,14 +34,20 @@ public sealed class ProductController : Controller
                 ? categoryId
                 : null;
 
-        IReadOnlyList<Product> products = selectedCategoryId.HasValue
-            ? await _productService.GetActiveByCategoryAsync(
-                selectedCategoryId.Value,
-                cancellationToken)
-            : await _productService.GetActiveAsync(cancellationToken);
+        var searchQuery = string.IsNullOrWhiteSpace(q) ? null : q.Trim();
+        IReadOnlyList<Product> products = searchQuery is null
+            ? await _productService.GetActiveAsync(cancellationToken)
+            : await _productService.SearchAsync(searchQuery, cancellationToken);
+
+        IEnumerable<Product> filteredProducts = products;
+        if (selectedCategoryId.HasValue)
+        {
+            filteredProducts = filteredProducts.Where(
+                product => product.CategoryId == selectedCategoryId.Value);
+        }
 
         var selectedSort = NormalizeSort(sort);
-        var sortedProducts = SortProducts(products, selectedSort);
+        var sortedProducts = SortProducts(filteredProducts, selectedSort);
 
         var viewModel = new ProductCatalogViewModel
         {
@@ -60,14 +67,44 @@ public sealed class ProductController : Controller
                     Price = product.Price,
                     StockQuantity = product.StockQuantity,
                     ImageUrl = product.ImageUrl,
-                    DetailUrl = null,
                 })
                 .ToList(),
             SelectedCategoryId = selectedCategoryId,
             SelectedSort = selectedSort,
+            SearchQuery = searchQuery,
             FilterNotice = categoryWasRequested && !selectedCategoryId.HasValue
-                ? "Danh mục không hợp lệ. Đang hiển thị tất cả sản phẩm."
+                ? "Bộ lọc danh mục không hợp lệ và đã được bỏ qua."
                 : null,
+        };
+
+        return View(viewModel);
+    }
+
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> Detail(
+        int id,
+        CancellationToken cancellationToken)
+    {
+        if (id <= 0)
+        {
+            return NotFound();
+        }
+
+        var product = await _productService.GetByIdAsync(id, cancellationToken);
+        if (product is null || !product.IsActive || !product.Category.IsActive)
+        {
+            return NotFound();
+        }
+
+        var viewModel = new ProductDetailViewModel
+        {
+            ProductId = product.ProductId,
+            ProductName = product.ProductName,
+            CategoryName = product.Category.CategoryName,
+            Description = product.Description,
+            Price = product.Price,
+            StockQuantity = product.StockQuantity,
+            ImageUrl = product.ImageUrl,
         };
 
         return View(viewModel);

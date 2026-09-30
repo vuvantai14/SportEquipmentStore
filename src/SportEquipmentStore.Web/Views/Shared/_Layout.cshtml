@@ -2,6 +2,7 @@
     var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
     var isHomePage = string.Equals(currentController, "Home", StringComparison.OrdinalIgnoreCase);
     var isProductCatalog = string.Equals(currentController, "Product", StringComparison.OrdinalIgnoreCase);
+    var currentSearchQuery = Context.Request.Query["q"].ToString();
 }
 
 <!DOCTYPE html>
@@ -42,7 +43,12 @@
                     </span>
                 </a>
 
-                <form class="header-search" role="search" aria-label="Tìm kiếm sản phẩm">
+                <form class="header-search"
+                      asp-controller="Product"
+                      asp-action="Index"
+                      method="get"
+                      role="search"
+                      aria-label="Tìm kiếm sản phẩm">
                     <label class="visually-hidden" for="site-search">Tìm kiếm sản phẩm</label>
                     <span class="header-search__icon">
                         @await Html.PartialAsync("_Icon", "search")
@@ -50,18 +56,15 @@
                     <input id="site-search"
                            class="header-search__input"
                            type="search"
-                           name="query"
+                           name="q"
+                           value="@currentSearchQuery"
                            placeholder="Tìm kiếm sản phẩm..."
-                           autocomplete="off"
-                           aria-describedby="search-availability" />
+                           autocomplete="off" />
                     <button class="header-search__button"
-                            type="button"
-                            aria-label="Tìm kiếm sản phẩm - sẽ có ở bước S12"
-                            title="Tìm kiếm sẽ được triển khai ở S12"
-                            disabled>
+                            type="submit"
+                            aria-label="Tìm kiếm sản phẩm">
                         Tìm kiếm
                     </button>
-                    <span id="search-availability" class="visually-hidden">Chức năng tìm kiếm sẽ được triển khai ở bước sau.</span>
                 </form>
 
                 <div class="header-actions" aria-label="Tài khoản và giỏ hàng">

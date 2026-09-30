@@ -10,6 +10,8 @@ public sealed class ProductCatalogViewModel
 
     public string SelectedSort { get; init; } = "default";
 
+    public string? SearchQuery { get; init; }
+
     public string? FilterNotice { get; init; }
 
     public int TotalProducts => Products.Count;

@@ -46,8 +46,7 @@ public class HomeController : Controller
                     CategoryName = product.Category.CategoryName,
                     Price = product.Price,
                     StockQuantity = product.StockQuantity,
-                    ImageUrl = product.ImageUrl,
-                    DetailUrl = null
+                    ImageUrl = product.ImageUrl
                 })
                 .ToArray()
         };

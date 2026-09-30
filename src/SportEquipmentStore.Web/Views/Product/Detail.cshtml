@@ -1,0 +1,59 @@
+@using System.Globalization
+@model ProductDetailViewModel
+
+@{
+    ViewData["Title"] = Model.ProductName;
+    var imageUrl = string.IsNullOrWhiteSpace(Model.ImageUrl)
+        ? Url.Content("~/images/placeholders/product-placeholder.svg")
+        : Model.ImageUrl;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/product-detail.css" asp-append-version="true" />
+}
+
+<nav class="product-detail-breadcrumb" aria-label="Đường dẫn điều hướng">
+    <ol>
+        <li><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+        <li><a asp-controller="Product" asp-action="Index">Sản phẩm</a></li>
+        <li aria-current="page">@Model.ProductName</li>
+    </ol>
+</nav>
+
+<article class="product-detail" aria-labelledby="product-detail-title">
+    <figure class="product-detail__media">
+        <img src="@imageUrl" alt="@Model.ProductName" />
+    </figure>
+
+    <div class="product-detail__content">
+        <span class="product-detail__category">@Model.CategoryName</span>
+        <h1 id="product-detail-title">@Model.ProductName</h1>
+        <strong class="product-detail__price">
+            @Model.Price.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) ₫
+        </strong>
+
+        <div class="product-detail__stock @(Model.StockQuantity > 0 ? "is-available" : "is-unavailable")">
+            <span aria-hidden="true"></span>
+            @if (Model.StockQuantity > 0)
+            {
+                <strong>Còn hàng (@Model.StockQuantity sản phẩm)</strong>
+            }
+            else
+            {
+                <strong>Hết hàng</strong>
+            }
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.Description))
+        {
+            <section class="product-detail__description" aria-labelledby="product-description-title">
+                <h2 id="product-description-title">Mô tả sản phẩm</h2>
+                <p>@Model.Description</p>
+            </section>
+        }
+
+        <a class="btn btn-outline-primary product-detail__back"
+           asp-controller="Product"
+           asp-action="Index">Quay lại danh sách sản phẩm</a>
+    </div>
+</article>

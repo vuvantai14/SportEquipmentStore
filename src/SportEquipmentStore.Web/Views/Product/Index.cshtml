@@ -23,6 +23,16 @@
           asp-action="Index"
           method="get">
         <div class="catalog-filter-field">
+            <label for="q">Tìm kiếm</label>
+            <input id="q"
+                   name="q"
+                   type="search"
+                   value="@Model.SearchQuery"
+                   placeholder="Tên sản phẩm..."
+                   autocomplete="off" />
+        </div>
+
+        <div class="catalog-filter-field">
             <label for="categoryId">Danh mục</label>
             <select id="categoryId" name="categoryId">
                 <option value="" selected="@(!Model.SelectedCategoryId.HasValue ? "selected" : null)">Tất cả danh mục</option>
@@ -58,7 +68,14 @@
     }
 
     <div class="catalog-summary">
-        <h2>Danh sách sản phẩm</h2>
+        @if (string.IsNullOrWhiteSpace(Model.SearchQuery))
+        {
+            <h2>Danh sách sản phẩm</h2>
+        }
+        else
+        {
+            <h2>Kết quả tìm kiếm cho: <span class="catalog-summary__query">@Model.SearchQuery</span></h2>
+        }
         <span>@Model.TotalProducts sản phẩm</span>
     </div>
 

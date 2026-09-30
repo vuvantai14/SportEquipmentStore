@@ -19,6 +19,8 @@ Sport Equipment Store gồm website ASP.NET Core MVC dành cho khách hàng và 
 - Customer homepage với Hero và trust benefits.
 - Featured categories và product showcase từ database.
 - Product Catalog tại `/products`.
+- Product Detail tại `/products/{id}`.
+- Search backend từ Header và Product Catalog.
 - Lọc sản phẩm theo danh mục và sắp xếp theo giá hoặc tên.
 - Reusable Product Card với trạng thái tồn kho.
 - Local product image fallback và SVG assets.
@@ -137,8 +139,7 @@ UI → Service Layer → Entity Framework Core → SQL Server
 - Hiển thị giá, danh mục và trạng thái tồn kho.
 - Dùng local placeholder khi thiếu ảnh.
 - Xử lý empty state và category filter không hợp lệ.
-
-Product Detail chưa được triển khai.
+- Product Card mở trang chi tiết bằng ASP.NET Core routing.
 
 ## Business Rules
 
@@ -199,12 +200,10 @@ Không lưu connection string chứa thông tin bí mật trong source control. 
 - Shared Service Layer.
 - Customer Web foundation và responsive Homepage.
 - Database-driven categories và products.
-- Product Catalog, category filtering và product sorting.
+- Product Catalog, Product Detail, search, category filtering và product sorting.
 
 ### Under Development
 
-- Product Detail.
-- Search experience.
 - Authentication và Authorization.
 - Shopping Cart pages.
 - Checkout.

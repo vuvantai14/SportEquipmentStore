@@ -18,13 +18,9 @@
         <span class="product-card__category">@Model.CategoryName</span>
         <h3 class="product-card__title">@Model.ProductName</h3>
         <strong class="product-card__price">@Model.Price.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) ₫</strong>
-        @if (!string.IsNullOrWhiteSpace(Model.DetailUrl))
-        {
-            <a class="btn btn-outline-primary product-card__action" href="@Model.DetailUrl">Xem chi tiết</a>
-        }
-        else
-        {
-            <span class="btn btn-outline-primary product-card__action disabled" aria-disabled="true">Xem chi tiết</span>
-        }
+        <a class="btn btn-outline-primary product-card__action"
+           asp-controller="Product"
+           asp-action="Detail"
+           asp-route-id="@Model.ProductId">Xem chi tiết</a>
     </div>
 </article>
