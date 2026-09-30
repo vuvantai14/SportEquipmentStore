@@ -1,31 +1,142 @@
+@model HomeViewModel
+
 @{
     ViewData["Title"] = "Trang chủ";
 }
 
-<section class="home-intro" aria-labelledby="home-intro-title">
-    <div class="home-intro__content">
-        <span class="eyebrow">Nền tảng mua sắm thể thao</span>
-        <h1 id="home-intro-title">Sẵn sàng cho mọi chuyển động</h1>
-        <p>
-            Sport Equipment Store đang xây dựng trải nghiệm mua dụng cụ thể thao hiện đại,
-            rõ ràng và thuận tiện trên mọi thiết bị.
-        </p>
-        <div class="home-intro__actions">
-            <a class="btn btn-primary" href="#trust-benefits">Khám phá lợi ích</a>
-            <span class="home-intro__status">Danh mục và sản phẩm sẽ được hoàn thiện ở S10.</span>
-        </div>
-    </div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/home.css" asp-append-version="true" />
+}
 
-    <div class="home-intro__visual" aria-label="Nền tảng giao diện Sport Equipment Store">
-        <div class="intro-panel">
-            <img src="~/images/branding/logo-mark.svg" alt="" width="72" height="72" />
-            <span class="intro-panel__eyebrow">UI FOUNDATION</span>
-            <strong>Trải nghiệm nhất quán từ desktop đến mobile</strong>
-            <ul>
-                <li>Điều hướng rõ ràng</li>
-                <li>Tìm kiếm dễ tiếp cận</li>
-                <li>Thiết kế responsive</li>
-            </ul>
+<div class="home-page">
+    <section class="home-hero" aria-labelledby="home-hero-title">
+        <div class="home-hero__content">
+            <span class="eyebrow">Dụng cụ thể thao cho mọi mục tiêu</span>
+            <h1 id="home-hero-title">Trang bị đúng.<br />Chinh phục mọi giới hạn.</h1>
+            <p>
+                Khám phá các sản phẩm thể thao đang hoạt động, thông tin rõ ràng
+                và trải nghiệm mua sắm thuận tiện trên mọi thiết bị.
+            </p>
+            <div class="home-hero__actions">
+                <a class="btn btn-primary" asp-controller="Product" asp-action="Index">Khám phá sản phẩm</a>
+                <a class="btn btn-outline-light" href="#featured-categories">Xem danh mục</a>
+            </div>
         </div>
-    </div>
-</section>
+
+        <div class="home-hero__visual" aria-label="Tổng quan dữ liệu nổi bật của cửa hàng">
+            <div class="hero-spotlight">
+                <div class="hero-spotlight__brand">
+                    <img src="~/images/branding/logo-mark.svg" alt="" width="70" height="70" />
+                    <span>
+                        <small>SPORT EQUIPMENT</small>
+                        <strong>Sẵn sàng chuyển động</strong>
+                    </span>
+                </div>
+                <div class="hero-spotlight__stats">
+                    <span>
+                        <strong>@Model.FeaturedCategories.Count</strong>
+                        <small>Danh mục nổi bật</small>
+                    </span>
+                    <span>
+                        <strong>@Model.FeaturedProducts.Count</strong>
+                        <small>Sản phẩm giới thiệu</small>
+                    </span>
+                </div>
+                <p>Dữ liệu sản phẩm và danh mục được cập nhật trực tiếp từ hệ thống.</p>
+            </div>
+        </div>
+    </section>
+
+    <partial name="_TrustBenefits" />
+
+    <section id="featured-categories" class="home-section" aria-labelledby="featured-categories-title">
+        <div class="section-heading">
+            <div>
+                <span class="section-heading__eyebrow">Khám phá theo môn thể thao</span>
+                <h2 id="featured-categories-title">Danh mục nổi bật</h2>
+                <p>Chọn nhóm sản phẩm phù hợp với hoạt động và mục tiêu luyện tập của bạn.</p>
+            </div>
+            @if (Model.FeaturedCategories.Count > 0)
+            {
+                <span class="section-heading__count">@Model.FeaturedCategories.Count danh mục đang hoạt động</span>
+            }
+        </div>
+
+        @if (Model.FeaturedCategories.Count == 0)
+        {
+            <div class="home-empty-state" role="status">
+                <span class="home-empty-state__icon">@await Html.PartialAsync("_Icon", "category")</span>
+                <h3>Chưa có danh mục hoạt động</h3>
+                <p>Danh mục sẽ xuất hiện tại đây khi được cập nhật.</p>
+            </div>
+        }
+        else
+        {
+            <div class="category-grid">
+                @for (var index = 0; index < Model.FeaturedCategories.Count; index++)
+                {
+                    var category = Model.FeaturedCategories[index];
+                    var toneClass = $"category-card--tone-{(index % 3) + 1}";
+
+                    <article class="category-card @toneClass">
+                        <span class="category-card__icon">@await Html.PartialAsync("_Icon", "category")</span>
+                        <span class="category-card__status">Đang hoạt động</span>
+                        <h3>@category.CategoryName</h3>
+                        @if (string.IsNullOrWhiteSpace(category.Description))
+                        {
+                            <p>Khám phá các sản phẩm trong danh mục này.</p>
+                        }
+                        else
+                        {
+                            <p>@category.Description</p>
+                        }
+                        <a asp-controller="Product"
+                           asp-action="Index"
+                           asp-route-categoryId="@category.CategoryId">Xem sản phẩm</a>
+                    </article>
+                }
+            </div>
+        }
+    </section>
+
+    <section id="featured-products" class="home-section" aria-labelledby="featured-products-title">
+        <div class="section-heading">
+            <div>
+                <span class="section-heading__eyebrow">Lựa chọn từ cửa hàng</span>
+                <h2 id="featured-products-title">Sản phẩm nổi bật</h2>
+                <p>Một số sản phẩm đang hoạt động, được chọn theo thứ tự ổn định để giới thiệu trên trang chủ.</p>
+            </div>
+            @if (Model.FeaturedProducts.Count > 0)
+            {
+                <span class="section-heading__count">@Model.FeaturedProducts.Count sản phẩm</span>
+            }
+        </div>
+
+        @if (Model.FeaturedProducts.Count == 0)
+        {
+            <div class="home-empty-state" role="status">
+                <span class="home-empty-state__icon">@await Html.PartialAsync("_Icon", "cart")</span>
+                <h3>Chưa có sản phẩm hoạt động</h3>
+                <p>Sản phẩm sẽ xuất hiện tại đây khi sẵn sàng phục vụ.</p>
+            </div>
+        }
+        else
+        {
+            <div class="product-grid">
+                @foreach (var product in Model.FeaturedProducts)
+                {
+                    <partial name="_ProductCard" model="product" />
+                }
+            </div>
+        }
+    </section>
+
+    <section class="home-cta" aria-labelledby="home-cta-title">
+        <div>
+            <span class="home-cta__eyebrow">Bắt đầu từ hôm nay</span>
+            <h2 id="home-cta-title">Sẵn sàng bắt đầu hành trình thể thao?</h2>
+            <p>Khám phá những sản phẩm đang có sẵn và chọn trang bị phù hợp với bạn.</p>
+        </div>
+        <a class="btn btn-light" asp-controller="Product" asp-action="Index">Xem tất cả sản phẩm</a>
+    </section>
+</div>

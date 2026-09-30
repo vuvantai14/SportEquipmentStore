@@ -9,19 +9,17 @@
 }
 
 <section id="trust-benefits" class="trust-section" aria-labelledby="trust-section-title">
-    <div class="container">
-        <h2 id="trust-section-title" class="visually-hidden">Lợi ích khi mua sắm</h2>
-        <div class="trust-section__grid">
-            @foreach (var benefit in benefits)
-            {
-                <article class="trust-item">
-                    <span class="trust-item__icon">@await Html.PartialAsync("_Icon", benefit.Icon)</span>
-                    <span class="trust-item__copy">
-                        <strong>@benefit.Title</strong>
-                        <span>@benefit.Description</span>
-                    </span>
-                </article>
-            }
-        </div>
+    <h2 id="trust-section-title" class="visually-hidden">Lợi ích khi mua sắm</h2>
+    <div class="trust-section__grid">
+        @foreach (var benefit in benefits)
+        {
+            <article class="trust-item">
+                <span class="trust-item__icon">@await Html.PartialAsync("_Icon", benefit.Icon)</span>
+                <span class="trust-item__copy">
+                    <strong>@benefit.Title</strong>
+                    <span>@benefit.Description</span>
+                </span>
+            </article>
+        }
     </div>
 </section>

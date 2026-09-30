@@ -1,107 +1,83 @@
 # Sport Equipment Store
 
-**Đề tài:** Xây dựng hệ thống quản lý và bán dụng cụ thể thao
+## Project Overview
+
+**Đề tài:** Xây dựng hệ thống quản lý và bán dụng cụ thể thao.
 
 **Môn:** Ngôn ngữ lập trình C#
 
-Sport Equipment Store là hệ thống quản lý và bán dụng cụ thể thao, bao gồm website dành cho khách hàng và ứng dụng Windows Forms dành cho quản trị viên. Hai ứng dụng sử dụng chung dữ liệu nghiệp vụ trên Microsoft SQL Server.
+Sport Equipment Store gồm website ASP.NET Core MVC dành cho khách hàng và ứng dụng Windows Forms dành cho quản trị viên. Hai ứng dụng chia sẻ Core, Service Layer và dữ liệu nghiệp vụ trên Microsoft SQL Server.
 
 ## Features
 
 ### Customer Web
 
-- Responsive customer website foundation.
-- Shared header and navigation.
-- Category navigation loaded from the database through the Service Layer.
-- Search interface foundation.
-- Account interface foundation.
-- Shopping cart interface foundation.
-- Responsive footer and reusable benefit section.
-- Reusable product card component.
-- Responsive desktop, tablet and mobile layouts.
-- Local SVG icons, branding and placeholder assets.
-- Basic accessibility support with semantic landmarks, labels and keyboard focus states.
+- Responsive customer website.
+- Shared header, navigation và footer.
+- Responsive mobile navigation.
+- Database-driven category navigation.
+- Customer homepage với Hero và trust benefits.
+- Featured categories và product showcase từ database.
+- Product Catalog tại `/products`.
+- Lọc sản phẩm theo danh mục và sắp xếp theo giá hoặc tên.
+- Reusable Product Card với trạng thái tồn kho.
+- Local product image fallback và SVG assets.
+- Empty states cho dữ liệu không có kết quả.
+- Basic accessibility support với semantic markup, labels và focus states.
 
-### Business Layer
+### Business Services
 
-- Category management service.
-- Product management and product search services.
-- Customer profile service.
-- Persistent shopping cart business logic.
-- Quantity and stock validation.
-- Order creation from a customer's cart.
-- Transaction handling for checkout and order updates.
-- Inventory deduction after successful order creation.
-- Order cancellation and inventory restoration.
-- Server-side order total calculation.
+- Category management.
+- Product management và search service.
+- Customer management.
+- Persistent cart business logic.
+- Cart quantity và stock validation.
+- Order creation từ giỏ hàng.
+- Transaction handling cho quá trình tạo đơn và cập nhật trạng thái.
+- Inventory deduction và restoration.
+- Order status và cancellation rules.
+- Order total calculation tại Service Layer.
 
 ### Admin Application
 
 - Windows Forms project foundation.
 - Shared Core/Data architecture.
-- Prepared to use the same Service Layer and SQL Server database as the customer website.
+- Được thiết kế sử dụng chung SQL Server database với Customer Web.
 
-The management dashboard, authentication screens and CRUD interface for the Admin application are not complete.
+Admin Login, Dashboard và các màn hình quản lý CRUD chưa được triển khai.
 
 ## Technology Stack
 
-### Backend / Web
-
-- C#
-- .NET 9
+- C# và .NET 9
 - ASP.NET Core MVC
 - Razor Views
-
-### Desktop
-
 - Windows Forms
-
-### Data
-
-- Microsoft SQL Server
 - Entity Framework Core 9.0.20
-
-### Frontend
-
-- HTML
-- CSS
-- Bootstrap
-- JavaScript
-- Local SVG assets
-
-### Development
-
-- Visual Studio Code
-- Git
-- GitHub
+- Microsoft SQL Server
+- HTML, CSS, Bootstrap và JavaScript
+- Git và GitHub
 
 ## Architecture
 
 ```text
-Customer Web
-     │
-     ▼
-Service Layer
-     │
-     ▼
-Entity Framework Core
-     │
-     ▼
-Microsoft SQL Server
-     ▲
-     │
-Service Layer
-     ▲
-     │
-Admin WinForms
+Customer Web / Admin WinForms
+            │
+            ▼
+       Service Layer
+            │
+            ▼
+   Entity Framework Core
+            │
+            ▼
+   Microsoft SQL Server
 ```
 
-- **SportEquipmentStore.Core:** Domain entities, enums, service interfaces and shared models.
-- **SportEquipmentStore.Data:** EF Core DbContext, migrations, seed configuration and service implementations.
-- **SportEquipmentStore.Web:** ASP.NET Core MVC customer website.
-- **SportEquipmentStore.Admin:** Windows Forms administration application.
+- `SportEquipmentStore.Core`: Entities, Enums, Interfaces và shared Models.
+- `SportEquipmentStore.Data`: DbContext, Migrations, Seed và Services.
+- `SportEquipmentStore.Web`: ASP.NET Core MVC Customer Web.
+- `SportEquipmentStore.Admin`: Windows Forms Admin foundation.
 
-The Service Layer keeps shared business rules outside the Web and Admin user interfaces. UI projects do not need to work directly with `SportEquipmentStoreDbContext` for the supported operations.
+Service Layer tập trung business rules để Web và Admin có thể dùng chung dữ liệu nghiệp vụ mà không đặt logic truy cập dữ liệu trong UI.
 
 ## Project Structure
 
@@ -111,35 +87,19 @@ SportEquipmentStore/
 ├── src/
 │   ├── SportEquipmentStore.Admin/
 │   ├── SportEquipmentStore.Core/
-│   │   ├── Entities/
-│   │   ├── Enums/
-│   │   ├── Interfaces/
-│   │   └── Models/
 │   ├── SportEquipmentStore.Data/
-│   │   ├── Context/
-│   │   ├── Migrations/
-│   │   ├── Seed/
-│   │   └── Services/
 │   └── SportEquipmentStore.Web/
-│       ├── Controllers/
-│       ├── Models/
-│       ├── ViewComponents/
-│       ├── Views/
-│       └── wwwroot/
 ├── SportEquipmentStore.sln
 └── README.md
 ```
 
-Generated `bin/` and `obj/` directories are not part of the repository structure shown above.
-
 ## Database
 
-- **Database name:** `SportEquipmentStoreDb`
-- **Database engine:** Microsoft SQL Server
-- **Development endpoint:** `tcp:localhost,1433`
-- **Authentication in the current development configuration:** Windows Authentication
+- **Database:** `SportEquipmentStoreDb`
+- **DBMS:** Microsoft SQL Server
+- **Development authentication:** Windows Authentication
 
-The database contains the following business tables:
+Business tables:
 
 - `Roles`
 - `Users`
@@ -151,143 +111,109 @@ The database contains the following business tables:
 - `Orders`
 - `OrderDetails`
 
-EF Core records applied migrations in `__EFMigrationsHistory`. The current schema is represented by the `InitialCreate` migration.
-
-No password or SQL credential is stored in this README. Use local configuration or the .NET secret/configuration mechanism when a development environment requires a different connection string.
-
-### Main Relationships
-
-```text
-Role       1 ─── N     User
-User       1 ─── 0..1  Customer
-Category   1 ─── N     Product
-Customer   1 ─── 0..1  Cart
-Cart       1 ─── N     CartItem
-Product    1 ─── N     CartItem
-Customer   1 ─── N     Order
-Order      1 ─── N     OrderDetail
-Product    1 ─── N     OrderDetail
-```
-
-### Initial Data
-
-The migration provides deterministic initial data:
-
-**Roles**
-
-- Admin
-- Customer
-
-**Categories**
-
-- Bóng đá
-- Cầu lông
-- Bóng rổ
-- Tennis
-- Gym & Fitness
-- Bơi lội
-
-**Products**
-
-- 12 sample sport products distributed across the six categories.
-
-No user password or Admin account is included in the seed data.
+Seed data hiện tại gồm 2 Roles, 6 Categories và 12 Products. Seed không tạo tài khoản quản trị hoặc mật khẩu mẫu.
 
 ## Service Layer
 
-| Interface | Implementation | Responsibility |
-|---|---|---|
-| `ICategoryService` | `CategoryService` | Category queries, create/update operations and active state management. |
-| `IProductService` | `ProductService` | Product queries, search, validation and active state management. |
-| `ICustomerService` | `CustomerService` | Customer profile queries and updates. |
-| `ICartService` | `CartService` | Persistent cart, item quantity and stock validation operations. |
-| `IOrderService` | `OrderService` | Order queries, checkout, status transitions and cancellation. |
+- `ICategoryService` / `CategoryService`
+- `IProductService` / `ProductService`
+- `ICustomerService` / `CustomerService`
+- `ICartService` / `CartService`
+- `IOrderService` / `OrderService`
 
-The Service Layer contains reusable business logic so that Web and Admin code do not need to process supported operations directly with the DbContext.
+Luồng xử lý chung:
 
 ```text
 UI → Service Layer → Entity Framework Core → SQL Server
 ```
 
+## Product Catalog
+
+- Products được tải từ SQL Server thông qua Service Layer.
+- Chỉ hiển thị Product và Category đang active.
+- Lọc theo danh mục bằng GET/query string.
+- Sắp xếp giá tăng dần, giá giảm dần và tên A–Z.
+- Tái sử dụng Product Card từ Homepage.
+- Hiển thị giá, danh mục và trạng thái tồn kho.
+- Dùng local placeholder khi thiếu ảnh.
+- Xử lý empty state và category filter không hợp lệ.
+
+Product Detail chưa được triển khai.
+
 ## Business Rules
 
-- Product and Category use `IsActive` to represent their current availability.
-- A product is visible to customers only when both the Product and its Category are active.
-- Shopping carts and cart items are persisted in SQL Server.
-- Cart quantities must be positive and cannot exceed available stock.
-- A cart does not reserve inventory or lock a product price.
-- `OrderDetail.UnitPrice` stores the product price at the time the order is placed.
-- `Order.TotalAmount` is calculated by the Service Layer from the order details.
-- A total supplied by the client is never trusted.
-- Creating an Order, creating its OrderDetails, deducting stock and clearing CartItems are performed in one transaction.
-- Inventory is deducted only when the order is created successfully.
-- A valid cancellation restores inventory according to the current order rules and does not restore it more than once.
-- Supported order flow is `Pending → Confirmed → Shipping → Completed`, with cancellation allowed only from valid states.
+- Category và Product sử dụng `IsActive`.
+- Customer Web chỉ hiển thị Product khi cả Product và Category đều active.
+- Cart và CartItem được lưu trong database.
+- Số lượng trong Cart phải lớn hơn 0 và không vượt tồn kho.
+- `OrderDetail.UnitPrice` lưu giá tại thời điểm đặt hàng.
+- `Order.TotalAmount` được tính từ OrderDetails tại Service Layer.
+- Tạo Order, OrderDetails, trừ tồn kho và xóa CartItems được thực hiện trong transaction.
+- Stock chỉ giảm khi tạo Order thành công.
+- Hủy Order hợp lệ hoàn tồn kho theo business rule và không hoàn lặp lại.
+- Luồng trạng thái hỗ trợ `Pending → Confirmed → Shipping → Completed`; `Cancelled` chỉ áp dụng từ trạng thái hợp lệ.
 
 ## Getting Started
 
-### Requirements
+Yêu cầu: .NET 9 SDK, Microsoft SQL Server và EF Core CLI tools.
 
-- .NET 9 SDK
-- Microsoft SQL Server
-- Git
-- EF Core CLI tools for applying migrations
-
-### Clone
+Khôi phục dependencies và build solution:
 
 ```powershell
-git clone https://github.com/vuvantai14/SportEquipmentStore.git
-cd SportEquipmentStore
+dotnet restore
+dotnet build
 ```
 
-### Restore
-
-```powershell
-dotnet restore SportEquipmentStore.sln
-```
-
-### Configure the Database
-
-The default development configuration expects SQL Server at `tcp:localhost,1433`, database `SportEquipmentStoreDb`, using Windows Authentication. If your SQL Server setup is different, provide a local `DefaultConnection` configuration without committing credentials to Git.
-
-Apply the existing migration:
+Cập nhật database từ migration hiện có:
 
 ```powershell
 dotnet ef database update --project src/SportEquipmentStore.Data --startup-project src/SportEquipmentStore.Web
 ```
 
-### Build
-
-```powershell
-dotnet build SportEquipmentStore.sln --no-restore
-```
-
-### Run the Customer Website
+Chạy Customer Web:
 
 ```powershell
 dotnet run --project src/SportEquipmentStore.Web
 ```
 
-The included launch profiles use:
+Không lưu connection string chứa thông tin bí mật trong source control. Nếu cấu hình SQL Server cục bộ khác cấu hình mặc định, hãy dùng biến môi trường, user secrets hoặc file cấu hình không được commit.
 
-- `https://localhost:7105`
-- `http://localhost:5141`
+## Documentation
 
-### Run the Admin Foundation
+- [System Analysis](docs/S2-System-Analysis.md)
+- [Use Cases](docs/S3-Use-Cases.md)
+- [Database Design](docs/S4-Database-Design.md)
+- [EF Core Configuration](docs/S6-EFCore-Configuration.md)
+- [Database Migration & Seed](docs/S7-Database-Migration-Seed.md)
+- [Service Layer](docs/S8-Service-Layer.md)
+- [Web UI Foundation](docs/S9-Web-UI-Foundation.md)
+- [Customer Homepage](docs/S10-Customer-Homepage.md)
+- [Product Catalog](docs/S11-Product-Catalog.md)
 
-The Windows Forms project requires Windows:
+## Current Status
 
-```powershell
-dotnet run --project src/SportEquipmentStore.Admin
-```
+### Available
 
-The Admin application currently provides only the project foundation; its management UI is not complete.
+- Solution architecture và domain entities.
+- SQL Server database, EF Core migrations và seed data.
+- Shared Service Layer.
+- Customer Web foundation và responsive Homepage.
+- Database-driven categories và products.
+- Product Catalog, category filtering và product sorting.
 
-## Current Limitations
+### Under Development
 
-- Product catalog, filtering, sorting and product detail pages are not complete.
-- Search has an interface foundation but no search results workflow in the Web UI.
-- Login, registration and authentication are not implemented.
-- Cart, checkout and order history business services exist, but their customer-facing pages are not implemented.
-- Admin login, dashboard, management forms, statistics and reports are not implemented.
-- Online payment, wishlist, review, coupon and promotion modules are not implemented.
+- Product Detail.
+- Search experience.
+- Authentication và Authorization.
+- Shopping Cart pages.
+- Checkout.
+- Order History.
+- Admin management UI.
+
+## Security
+
+- Không commit password, database credential hoặc secret.
+- Không lưu password dạng plain text.
+- Cấu hình development hiện tại sử dụng Windows Authentication cho SQL Server.
+- Production secrets phải được lưu ngoài source control.

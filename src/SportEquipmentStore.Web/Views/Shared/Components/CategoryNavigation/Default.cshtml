@@ -16,10 +16,12 @@
         @foreach (var category in Model)
         {
             <li>
-                <span class="dropdown-item category-menu__item" aria-disabled="true" title="Trang danh mục sẽ có ở S10">
+                <a class="dropdown-item category-menu__item"
+                   asp-controller="Product"
+                   asp-action="Index"
+                   asp-route-categoryId="@category.CategoryId">
                     <span>@category.CategoryName</span>
-                    <small>S10</small>
-                </span>
+                </a>
             </li>
         }
     }

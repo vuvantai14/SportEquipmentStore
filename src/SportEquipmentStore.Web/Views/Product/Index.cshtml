@@ -1,0 +1,82 @@
+@model ProductCatalogViewModel
+
+@{
+    ViewData["Title"] = "Sản phẩm";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/product-catalog.css" asp-append-version="true" />
+}
+
+<section class="catalog-hero" aria-labelledby="catalog-title">
+    <div class="catalog-hero__content">
+        <span class="catalog-eyebrow">Bộ sưu tập thể thao</span>
+        <h1 id="catalog-title">Sản phẩm</h1>
+        <p>Khám phá dụng cụ phù hợp để luyện tập hiệu quả hơn mỗi ngày.</p>
+    </div>
+</section>
+
+<div class="catalog-main">
+    <form id="catalog-filters"
+          class="catalog-filters"
+          asp-controller="Product"
+          asp-action="Index"
+          method="get">
+        <div class="catalog-filter-field">
+            <label for="categoryId">Danh mục</label>
+            <select id="categoryId" name="categoryId">
+                <option value="" selected="@(!Model.SelectedCategoryId.HasValue ? "selected" : null)">Tất cả danh mục</option>
+                @foreach (var category in Model.Categories)
+                {
+                    <option value="@category.CategoryId"
+                            selected="@(Model.SelectedCategoryId == category.CategoryId ? "selected" : null)">
+                        @category.CategoryName
+                    </option>
+                }
+            </select>
+        </div>
+
+        <div class="catalog-filter-field">
+            <label for="sort">Sắp xếp</label>
+            <select id="sort" name="sort">
+                <option value="default" selected="@(Model.SelectedSort == "default" ? "selected" : null)">Mặc định</option>
+                <option value="price-asc" selected="@(Model.SelectedSort == "price-asc" ? "selected" : null)">Giá tăng dần</option>
+                <option value="price-desc" selected="@(Model.SelectedSort == "price-desc" ? "selected" : null)">Giá giảm dần</option>
+                <option value="name-asc" selected="@(Model.SelectedSort == "name-asc" ? "selected" : null)">Tên A–Z</option>
+            </select>
+        </div>
+
+        <div class="catalog-filter-actions">
+            <button class="btn btn-primary" type="submit">Áp dụng</button>
+            <a class="btn btn-outline-secondary" asp-controller="Product" asp-action="Index">Đặt lại</a>
+        </div>
+    </form>
+
+    @if (!string.IsNullOrWhiteSpace(Model.FilterNotice))
+    {
+        <div class="catalog-notice" role="status">@Model.FilterNotice</div>
+    }
+
+    <div class="catalog-summary">
+        <h2>Danh sách sản phẩm</h2>
+        <span>@Model.TotalProducts sản phẩm</span>
+    </div>
+
+    @if (Model.Products.Count > 0)
+    {
+        <div class="catalog-grid">
+            @foreach (var product in Model.Products)
+            {
+                <partial name="_ProductCard" model="product" />
+            }
+        </div>
+    }
+    else
+    {
+        <div class="catalog-empty">
+            <h2>Không tìm thấy sản phẩm phù hợp.</h2>
+            <p>Hãy thử chọn danh mục khác hoặc đặt lại bộ lọc.</p>
+            <a class="btn btn-primary" asp-controller="Product" asp-action="Index">Xem tất cả sản phẩm</a>
+        </div>
+    }
+</div>

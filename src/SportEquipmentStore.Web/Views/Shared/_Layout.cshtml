@@ -1,3 +1,9 @@
+@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var isHomePage = string.Equals(currentController, "Home", StringComparison.OrdinalIgnoreCase);
+    var isProductCatalog = string.Equals(currentController, "Product", StringComparison.OrdinalIgnoreCase);
+}
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -9,6 +15,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SportEquipmentStore.Web.styles.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="site-body">
     <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
@@ -95,10 +102,18 @@
                 <div id="primary-navigation" class="collapse navbar-collapse">
                     <ul class="navbar-nav primary-nav__list">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
+                            <a class="nav-link @(isHomePage ? "active" : null)"
+                               aria-current="@(isHomePage ? "page" : null)"
+                               asp-area=""
+                               asp-controller="Home"
+                               asp-action="Index">Trang chủ</a>
                         </li>
                         <li class="nav-item">
-                            <span class="nav-link nav-link--disabled" aria-disabled="true" title="Danh sách sản phẩm sẽ có ở S11">Sản phẩm</span>
+                            <a class="nav-link @(isProductCatalog ? "active" : null)"
+                               aria-current="@(isProductCatalog ? "page" : null)"
+                               asp-area=""
+                               asp-controller="Product"
+                               asp-action="Index">Sản phẩm</a>
                         </li>
                         <li class="nav-item dropdown">
                             @await Component.InvokeAsync("CategoryNavigation")
@@ -122,8 +137,6 @@
         </div>
     </main>
 
-    <partial name="_TrustBenefits" />
-
     <footer class="site-footer">
         <div class="container">
             <div class="site-footer__grid">
@@ -142,8 +155,8 @@
                     <h2 id="footer-quick-links" class="site-footer__title">Liên kết nhanh</h2>
                     <ul class="footer-links">
                         <li><a asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a></li>
-                        <li><span aria-disabled="true">Sản phẩm <small>(S11)</small></span></li>
-                        <li><span aria-disabled="true">Danh mục <small>(S10)</small></span></li>
+                        <li><a asp-area="" asp-controller="Product" asp-action="Index">Sản phẩm</a></li>
+                        <li><a asp-area="" asp-controller="Product" asp-action="Index" asp-fragment="catalog-filters">Danh mục</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="Index" asp-fragment="about">Giới thiệu</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="Index" asp-fragment="contact">Liên hệ</a></li>
                     </ul>

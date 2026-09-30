@@ -1,3 +1,4 @@
+@using System.Globalization
 @model ProductCardViewModel
 
 @{
@@ -16,7 +17,7 @@
     <div class="product-card__body">
         <span class="product-card__category">@Model.CategoryName</span>
         <h3 class="product-card__title">@Model.ProductName</h3>
-        <strong class="product-card__price">@Model.Price.ToString("N0") ₫</strong>
+        <strong class="product-card__price">@Model.Price.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) ₫</strong>
         @if (!string.IsNullOrWhiteSpace(Model.DetailUrl))
         {
             <a class="btn btn-outline-primary product-card__action" href="@Model.DetailUrl">Xem chi tiết</a>

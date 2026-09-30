@@ -29,4 +29,10 @@
     <path d="M4 13a8 8 0 0 1 16 0v5a2 2 0 0 1-2 2h-3" />
     <path d="M4 13h3v6H5a2 2 0 0 1-2-2v-2a2 2 0 0 1 1-2Zm16 0h-3v6h3" />
   </symbol>
+  <symbol id="category" viewBox="0 0 24 24">
+    <rect x="3" y="3" width="7" height="7" rx="1.5" />
+    <rect x="14" y="3" width="7" height="7" rx="1.5" />
+    <rect x="3" y="14" width="7" height="7" rx="1.5" />
+    <rect x="14" y="14" width="7" height="7" rx="1.5" />
+  </symbol>
 </svg>
