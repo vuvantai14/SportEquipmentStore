@@ -264,6 +264,7 @@ a:focus-visible,
 }
 
 .header-account__guest a,
+.header-orders-link,
 .header-logout button {
   color: var(--color-navy-900);
   text-decoration: none;
@@ -271,6 +272,8 @@ a:focus-visible,
 
 .header-account__guest a:hover,
 .header-account__guest a:focus,
+.header-orders-link:hover,
+.header-orders-link:focus,
 .header-logout button:hover,
 .header-logout button:focus {
   color: var(--color-primary-600);
@@ -298,6 +301,10 @@ a:focus-visible,
 
 .header-logout {
   margin: 0;
+}
+
+.header-orders-link {
+  font-weight: 800;
 }
 
 .header-logout button {
@@ -1030,6 +1037,11 @@ a.header-action:hover {
   .header-account__guest {
     gap: 0.25rem;
     font-size: 0.7rem;
+  }
+
+  .header-account__authenticated {
+    gap: 0.3rem;
+    font-size: 0.68rem;
   }
 
   .header-action__icon {

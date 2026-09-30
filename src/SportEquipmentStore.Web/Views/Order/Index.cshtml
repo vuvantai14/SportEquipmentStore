@@ -1,0 +1,95 @@
+@using System.Globalization
+@using SportEquipmentStore.Core.Enums
+@model OrderHistoryViewModel
+
+@functions {
+    private static string GetStatusLabel(OrderStatus status) => status switch
+    {
+        OrderStatus.Pending => "Chờ xác nhận",
+        OrderStatus.Confirmed => "Đã xác nhận",
+        OrderStatus.Shipping => "Đang giao",
+        OrderStatus.Completed => "Hoàn thành",
+        OrderStatus.Cancelled => "Đã hủy",
+        _ => status.ToString(),
+    };
+}
+
+@{
+    ViewData["Title"] = "Đơn hàng của tôi";
+    var culture = CultureInfo.GetCultureInfo("vi-VN");
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/orders.css" asp-append-version="true" />
+}
+
+<section class="orders-page" aria-labelledby="orders-title">
+    <header class="orders-heading">
+        <span>Đơn hàng</span>
+        <h1 id="orders-title">Đơn hàng của tôi</h1>
+        <p>Theo dõi trạng thái và xem lại thông tin các đơn hàng đã đặt.</p>
+    </header>
+
+    @if (TempData["OrderSuccess"] is string successMessage)
+    {
+        <div class="orders-alert orders-alert--success" role="status">@successMessage</div>
+    }
+
+    @if (TempData["OrderError"] is string errorMessage)
+    {
+        <div class="orders-alert orders-alert--error" role="alert">@errorMessage</div>
+    }
+
+    @if (Model.Orders.Count == 0)
+    {
+        <div class="orders-empty">
+            <h2>Bạn chưa có đơn hàng nào.</h2>
+            <p>Khám phá danh mục dụng cụ thể thao và chọn sản phẩm phù hợp với bạn.</p>
+            <a class="btn btn-primary" asp-controller="Product" asp-action="Index">Mua sắm ngay</a>
+        </div>
+    }
+    else
+    {
+        <div class="order-list">
+            @foreach (var order in Model.Orders)
+            {
+                <article class="order-card">
+                    <div class="order-card__primary">
+                        <div>
+                            <span class="order-card__label">Mã đơn hàng</span>
+                            <h2>#@order.OrderId</h2>
+                        </div>
+                        <span class="order-status order-status--@order.Status.ToString().ToLowerInvariant()">
+                            @GetStatusLabel(order.Status)
+                        </span>
+                    </div>
+
+                    <dl class="order-card__facts">
+                        <div>
+                            <dt>Ngày đặt</dt>
+                            <dd>@order.OrderDate.ToString("dd/MM/yyyy HH:mm 'UTC'", culture)</dd>
+                        </div>
+                        <div>
+                            <dt>Sản phẩm</dt>
+                            <dd>@order.TotalItems</dd>
+                        </div>
+                        <div>
+                            <dt>Tổng tiền</dt>
+                            <dd>@order.TotalAmount.ToString("N0", culture) ₫</dd>
+                        </div>
+                    </dl>
+
+                    <div class="order-card__actions">
+                        @if (order.CanCancel)
+                        {
+                            <span>Có thể hủy khi đơn đang chờ xác nhận.</span>
+                        }
+                        <a class="btn btn-outline-primary"
+                           asp-action="Detail"
+                           asp-route-id="@order.OrderId">Xem chi tiết</a>
+                    </div>
+                </article>
+            }
+        </div>
+    }
+</section>

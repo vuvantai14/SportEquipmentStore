@@ -1,0 +1,125 @@
+@using System.Globalization
+@using SportEquipmentStore.Core.Enums
+@model CustomerOrderDetailViewModel
+
+@functions {
+    private static string GetStatusLabel(OrderStatus status) => status switch
+    {
+        OrderStatus.Pending => "Chờ xác nhận",
+        OrderStatus.Confirmed => "Đã xác nhận",
+        OrderStatus.Shipping => "Đang giao",
+        OrderStatus.Completed => "Hoàn thành",
+        OrderStatus.Cancelled => "Đã hủy",
+        _ => status.ToString(),
+    };
+}
+
+@{
+    ViewData["Title"] = $"Đơn hàng #{Model.OrderId}";
+    var culture = CultureInfo.GetCultureInfo("vi-VN");
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/orders.css" asp-append-version="true" />
+}
+
+<section class="order-detail" aria-labelledby="order-detail-title">
+    <a class="order-detail__back" asp-action="Index">← Quay lại đơn hàng của tôi</a>
+
+    <header class="order-detail__heading">
+        <div>
+            <span>Chi tiết đơn hàng</span>
+            <h1 id="order-detail-title">Đơn hàng #@Model.OrderId</h1>
+            <p>Đặt lúc @Model.OrderDate.ToString("dd/MM/yyyy HH:mm 'UTC'", culture)</p>
+        </div>
+        <span class="order-status order-status--@Model.Status.ToString().ToLowerInvariant()">
+            @GetStatusLabel(Model.Status)
+        </span>
+    </header>
+
+    @if (TempData["OrderSuccess"] is string successMessage)
+    {
+        <div class="orders-alert orders-alert--success" role="status">@successMessage</div>
+    }
+
+    @if (TempData["OrderError"] is string errorMessage)
+    {
+        <div class="orders-alert orders-alert--error" role="alert">@errorMessage</div>
+    }
+
+    <div class="order-detail__layout">
+        <div class="order-detail__main">
+            <section class="order-panel" aria-labelledby="order-items-title">
+                <div class="order-panel__title">
+                    <h2 id="order-items-title">Sản phẩm</h2>
+                    <span>@Model.TotalItems sản phẩm</span>
+                </div>
+
+                <div class="order-items">
+                    @foreach (var item in Model.Items)
+                    {
+                        <article class="order-item">
+                            <div>
+                                <h3>@item.ProductName</h3>
+                                <span>Đơn giá: @item.UnitPrice.ToString("N0", culture) ₫</span>
+                            </div>
+                            <span class="order-item__quantity">× @item.Quantity</span>
+                            <strong>@item.LineTotal.ToString("N0", culture) ₫</strong>
+                        </article>
+                    }
+                </div>
+
+                <div class="order-total">
+                    <span>Tổng thanh toán</span>
+                    <strong>@Model.TotalAmount.ToString("N0", culture) ₫</strong>
+                </div>
+            </section>
+
+            <section class="order-panel" aria-labelledby="shipping-title">
+                <div class="order-panel__title">
+                    <h2 id="shipping-title">Thông tin giao hàng</h2>
+                </div>
+                <dl class="shipping-details">
+                    <div>
+                        <dt>Người nhận</dt>
+                        <dd>@Model.ShippingFullName</dd>
+                    </div>
+                    <div>
+                        <dt>Số điện thoại</dt>
+                        <dd>@Model.ShippingPhone</dd>
+                    </div>
+                    <div>
+                        <dt>Địa chỉ</dt>
+                        <dd>@Model.ShippingAddress</dd>
+                    </div>
+                    @if (!string.IsNullOrWhiteSpace(Model.Note))
+                    {
+                        <div>
+                            <dt>Ghi chú</dt>
+                            <dd>@Model.Note</dd>
+                        </div>
+                    }
+                </dl>
+            </section>
+        </div>
+
+        <aside class="order-panel order-actions" aria-labelledby="order-actions-title">
+            <h2 id="order-actions-title">Trạng thái đơn hàng</h2>
+            <span class="order-status order-status--@Model.Status.ToString().ToLowerInvariant()">
+                @GetStatusLabel(Model.Status)
+            </span>
+
+            @if (Model.CanCancel)
+            {
+                <p>Đơn đang chờ xác nhận nên bạn vẫn có thể hủy. Sản phẩm sẽ được hoàn lại tồn kho.</p>
+                <form asp-action="Cancel" asp-route-id="@Model.OrderId" method="post">
+                    <button class="btn btn-danger" type="submit">Hủy đơn hàng</button>
+                </form>
+            }
+            else
+            {
+                <p>Đơn hàng chỉ có thể hủy khi đang ở trạng thái chờ xác nhận.</p>
+            }
+        </aside>
+    </div>
+</section>

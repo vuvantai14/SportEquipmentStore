@@ -1,0 +1,55 @@
+@using System.Globalization
+@model OrderSuccessViewModel
+
+@{
+    ViewData["Title"] = "Đặt hàng thành công";
+    var culture = CultureInfo.GetCultureInfo("vi-VN");
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/checkout.css" asp-append-version="true" />
+}
+
+<section class="order-success" aria-labelledby="order-success-title">
+    <div class="order-success__mark" aria-hidden="true">✓</div>
+    <span class="order-success__eyebrow">Đặt hàng thành công</span>
+    <h1 id="order-success-title">Cảm ơn bạn đã đặt hàng!</h1>
+    <p>Đơn hàng đã được ghi nhận và đang chờ xác nhận.</p>
+
+    <dl class="order-success__facts">
+        <div>
+            <dt>Mã đơn hàng</dt>
+            <dd>#@Model.OrderId</dd>
+        </div>
+        <div>
+            <dt>Ngày đặt</dt>
+            <dd>@Model.OrderDate.ToString("dd/MM/yyyy HH:mm 'UTC'", culture)</dd>
+        </div>
+        <div>
+            <dt>Trạng thái</dt>
+            <dd>@Model.Status</dd>
+        </div>
+        <div>
+            <dt>Tổng tiền</dt>
+            <dd>@Model.TotalAmount.ToString("N0", culture) ₫</dd>
+        </div>
+    </dl>
+
+    <section class="order-success__summary" aria-labelledby="success-summary-title">
+        <h2 id="success-summary-title">Tóm tắt đơn hàng</h2>
+        @foreach (var item in Model.Items)
+        {
+            <div class="order-success__item">
+                <span>@item.ProductName × @item.Quantity</span>
+                <strong>@item.LineTotal.ToString("N0", culture) ₫</strong>
+            </div>
+        }
+        <div class="order-success__delivery">
+            <strong>Giao đến</strong>
+            <span>@Model.ShippingFullName · @Model.ShippingPhone</span>
+            <span>@Model.ShippingAddress</span>
+        </div>
+    </section>
+
+    <a class="btn btn-primary" asp-controller="Product" asp-action="Index">Tiếp tục mua sắm</a>
+</section>

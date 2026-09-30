@@ -112,13 +112,9 @@ else
                 </div>
             </dl>
 
-            <button class="btn btn-primary cart-summary__checkout"
-                    type="button"
-                    disabled
-                    title="Thanh toán sẽ được triển khai ở bước tiếp theo">
-                Tiến hành thanh toán
-            </button>
-            <small>Chức năng thanh toán đang được phát triển.</small>
+            <a class="btn btn-primary cart-summary__checkout"
+               asp-controller="Checkout"
+               asp-action="Index">Tiến hành thanh toán</a>
 
             <form asp-controller="Cart"
                   asp-action="Clear"

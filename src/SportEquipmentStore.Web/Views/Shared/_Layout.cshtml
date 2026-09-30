@@ -77,6 +77,12 @@
                                     <small>Xin chào</small>
                                     <strong>@User.Identity.Name</strong>
                                 </span>
+                                @if (User.IsInRole("Customer"))
+                                {
+                                    <a class="header-orders-link"
+                                       asp-controller="Order"
+                                       asp-action="Index">Đơn hàng của tôi</a>
+                                }
                                 <form class="header-logout"
                                       asp-controller="Account"
                                       asp-action="Logout"

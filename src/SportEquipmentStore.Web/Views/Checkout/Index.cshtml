@@ -1,0 +1,94 @@
+@using System.Globalization
+@model CheckoutViewModel
+
+@{
+    ViewData["Title"] = "Thanh toán";
+    var culture = CultureInfo.GetCultureInfo("vi-VN");
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/checkout.css" asp-append-version="true" />
+}
+
+<header class="checkout-heading">
+    <span class="checkout-heading__eyebrow">Hoàn tất đơn hàng</span>
+    <h1>Thanh toán</h1>
+    <p>Kiểm tra thông tin nhận hàng và sản phẩm trước khi đặt hàng.</p>
+</header>
+
+<form asp-controller="Checkout"
+      asp-action="Index"
+      method="post"
+      asp-antiforgery="true"
+      class="checkout-layout">
+    <input asp-for="CheckoutRequestId" type="hidden" />
+
+    <section class="checkout-panel" aria-labelledby="shipping-title">
+        <h2 id="shipping-title">Thông tin nhận hàng</h2>
+        <div asp-validation-summary="ModelOnly" class="checkout-validation-summary" role="alert"></div>
+
+        <div class="checkout-field">
+            <label asp-for="ShippingFullName"></label>
+            <input asp-for="ShippingFullName" class="form-control" autocomplete="name" />
+            <span asp-validation-for="ShippingFullName"></span>
+        </div>
+
+        <div class="checkout-field">
+            <label asp-for="ShippingPhone"></label>
+            <input asp-for="ShippingPhone" class="form-control" autocomplete="tel" />
+            <span asp-validation-for="ShippingPhone"></span>
+        </div>
+
+        <div class="checkout-field">
+            <label asp-for="ShippingAddress"></label>
+            <textarea asp-for="ShippingAddress" class="form-control" rows="3" autocomplete="street-address"></textarea>
+            <span asp-validation-for="ShippingAddress"></span>
+        </div>
+
+        <div class="checkout-field">
+            <label asp-for="Note"></label>
+            <textarea asp-for="Note" class="form-control" rows="3" placeholder="Ghi chú giao hàng (không bắt buộc)"></textarea>
+            <span asp-validation-for="Note"></span>
+        </div>
+
+        <div class="checkout-payment" aria-label="Phương thức thanh toán">
+            <strong>Thanh toán khi nhận hàng (COD)</strong>
+            <span>Không yêu cầu thanh toán trực tuyến.</span>
+        </div>
+    </section>
+
+    <aside class="checkout-summary" aria-labelledby="checkout-summary-title">
+        <h2 id="checkout-summary-title">Đơn hàng của bạn</h2>
+
+        <div class="checkout-summary__items">
+            @foreach (var item in Model.Items)
+            {
+                <div class="checkout-summary__item">
+                    <div>
+                        <strong>@item.ProductName</strong>
+                        <span>@item.Quantity × @item.UnitPrice.ToString("N0", culture) ₫</span>
+                    </div>
+                    <strong>@item.LineTotal.ToString("N0", culture) ₫</strong>
+                </div>
+            }
+        </div>
+
+        <dl>
+            <div>
+                <dt>Tổng số lượng</dt>
+                <dd>@Model.TotalItems</dd>
+            </div>
+            <div class="checkout-summary__total">
+                <dt>Tổng tiền</dt>
+                <dd>@Model.TotalAmount.ToString("N0", culture) ₫</dd>
+            </div>
+        </dl>
+
+        <button class="btn btn-primary checkout-submit" type="submit">Đặt hàng</button>
+        <a class="checkout-back" asp-controller="Cart" asp-action="Index">Quay lại giỏ hàng</a>
+    </aside>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
